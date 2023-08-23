@@ -7,15 +7,17 @@ using UnityEngine.Networking;
 public class AuthHandler : MonoBehaviour
 {
 
-    public string ApiURL = "https://sid-restapi.onrender.com/api/";
+    public string ApiURL = "https://sid-restapi.onrender.com/";
 
     TMP_InputField UsernameInputField;
     TMP_InputField PasswordInputField;
-    
+    TMP_InputField ScoreInputField;
+
     void Start()
     {
         UsernameInputField = GameObject.Find("InputFieldUsername").GetComponent<TMP_InputField>();
         PasswordInputField = GameObject.Find("InputFieldPassword").GetComponent<TMP_InputField>();
+        ScoreInputField = GameObject.Find("InputFieldScore").GetComponent<TMP_InputField>();
     }
 
     public void Registrar()
@@ -40,6 +42,42 @@ public class AuthHandler : MonoBehaviour
         StartCoroutine(SendLogin(json));
     }
 
+    public void Score()
+    {
+        AuthData authData = new AuthData();
+        authData.score = ScoreInputField.text;
+
+        string json = JsonUtility.ToJson(authData);
+
+        StartCoroutine(SendScore(json));
+    }
+
+    IEnumerator SendScore(string json)
+    {
+        UnityWebRequest request = UnityWebRequest.Put(ApiURL + "/score", json);
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.method = "POST";
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError)
+        {
+            Debug.Log("NETWORK ERROR :" + request.error);
+        }
+        else
+        {
+            Debug.Log(request.downloadHandler.text);
+            if (request.responseCode == 200)
+            {
+                AuthData data = JsonUtility.FromJson<AuthData>(request.downloadHandler.text);
+
+                Debug.Log("Se registro un score" + data.score);
+            }
+            else
+            {
+                Debug.Log(request.error);
+            }
+        }
+    }
 
     IEnumerator SendRegister(string json)
     {
@@ -105,6 +143,7 @@ public class AuthData
     public string password;
     public UserData usuario;
     public string token;
+    public string score;
 }
 
 [System.Serializable]
@@ -113,4 +152,5 @@ public class UserData
     public string _id;
     public string username;
     public bool estado;
+
 }
