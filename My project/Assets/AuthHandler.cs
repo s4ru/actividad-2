@@ -13,8 +13,25 @@ public class AuthHandler : MonoBehaviour
     TMP_InputField PasswordInputField;
     TMP_InputField ScoreInputField;
 
+    private string Token;
+
+    private string Username;
+
+
     void Start()
     {
+        Token = PlayerPrefs.GetString("token");
+
+        if (string.IsNullOrEmpty(Token) )
+        {
+            Debug.Log("No hay token almacenado");
+
+        }
+        else
+        {
+            Username = PlayerPrefs.GetString("username");
+        }
+
         UsernameInputField = GameObject.Find("InputFieldUsername").GetComponent<TMP_InputField>();
         PasswordInputField = GameObject.Find("InputFieldPassword").GetComponent<TMP_InputField>();
         ScoreInputField = GameObject.Find("InputFieldScore").GetComponent<TMP_InputField>();
@@ -106,6 +123,26 @@ public class AuthHandler : MonoBehaviour
         }
     }
 
+    IEnumerator GetPerfil(string username)
+    {
+        UnityWebRequest request = UnityWebRequest.Get(ApiURL + "usuarios/"+username);
+        request.SetRequestHeader("x-token", Token);
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError)
+        {
+            Debug.Log("NETWORK ERROR :" + request.error);
+        }
+        else
+        {
+            Debug.Log(request.downloadHandler.text);
+            if (request.responseCode == 200)
+            {
+
+            }
+
+        }
+    }
 
     IEnumerator SendLogin(string json)
     {
@@ -126,6 +163,8 @@ public class AuthHandler : MonoBehaviour
                 AuthData data = JsonUtility.FromJson<AuthData>(request.downloadHandler.text);
 
                 Debug.Log("Inicio sesion el usuario" + data.usuario.username);
+                PlayerPrefs.SetString("token",data.token);
+                PlayerPrefs.SetString("username", data.usuario.username);
                 Debug.Log(data.token);
             }
             else
