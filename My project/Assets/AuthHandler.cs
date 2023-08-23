@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class AuthHandler : MonoBehaviour
 {
 
-    public string ApiURL = "https://sid-restapi.onrender.com/";
+    public string ApiURL = "https://sid-restapi.onrender.com/api/";
 
     TMP_InputField UsernameInputField;
     TMP_InputField PasswordInputField;
