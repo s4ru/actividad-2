@@ -476,7 +476,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 119669351}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 420859181}
+        m_TargetAssemblyTypeName: AuthHandler, Assembly-CSharp
+        m_MethodName: Score
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &119669351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1220,7 +1232,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 420859180}
-  - component: {fileID: 420859179}
+  - component: {fileID: 420859181}
   m_Layer: 0
   m_Name: AuthController
   m_TagString: Untagged
@@ -1228,7 +1240,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &420859179
+--- !u!4 &420859180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420859178}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 634.3058, y: 250.7013, z: 201.9733}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &420859181
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1240,22 +1267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 634c20a16de51134aa48aa4e8d1b5ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ApiURL: https://sid-restapi.onrender.com/
---- !u!4 &420859180
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 420859178}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 634.3058, y: 250.7013, z: 201.9733}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  ApiURL: https://sid-restapi.onrender.com/api/
 --- !u!1 &506950410
 GameObject:
   m_ObjectHideFlags: 0
@@ -2134,7 +2146,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 420859179}
+      - m_Target: {fileID: 420859181}
         m_TargetAssemblyTypeName: AuthHandler, Assembly-CSharp
         m_MethodName: Registrar
         m_Mode: 1
@@ -2848,7 +2860,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1912489404}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 420859181}
+        m_TargetAssemblyTypeName: AuthHandler, Assembly-CSharp
+        m_MethodName: Registrar
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1912489404
 MonoBehaviour:
   m_ObjectHideFlags: 0

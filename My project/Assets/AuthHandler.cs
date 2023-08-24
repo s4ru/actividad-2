@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class AuthHandler : MonoBehaviour
 {
 
-    public string ApiURL = "https://sid-restapi.onrender.com/";
+    public string ApiURL = "https://sid-restapi.onrender.com/api/";
 
     TMP_InputField UsernameInputField;
     TMP_InputField PasswordInputField;
@@ -30,6 +30,7 @@ public class AuthHandler : MonoBehaviour
         else
         {
             Username = PlayerPrefs.GetString("username");
+            StartCoroutine(GetPerfil(Username));
         }
 
         UsernameInputField = GameObject.Find("InputFieldUsername").GetComponent<TMP_InputField>();
@@ -98,7 +99,7 @@ public class AuthHandler : MonoBehaviour
 
     IEnumerator SendRegister(string json)
     {
-        UnityWebRequest request = UnityWebRequest.Put(ApiURL + "/usuarios",json);
+        UnityWebRequest request = UnityWebRequest.Put(ApiURL + "usuarios",json);
         request.SetRequestHeader("Content-Type", "application/json");
         request.method = "POST";
         yield return request.SendWebRequest();
@@ -138,7 +139,13 @@ public class AuthHandler : MonoBehaviour
             Debug.Log(request.downloadHandler.text);
             if (request.responseCode == 200)
             {
-
+                AuthData data = JsonUtility.FromJson<AuthData>(request.downloadHandler.text);
+                Debug.Log("Sesion activa del usuario" + data.usuario.username);
+                
+            }
+            else
+            {
+                Debug.Log(request.error);
             }
 
         }
@@ -180,16 +187,24 @@ public class AuthData
 {
     public string username;
     public string password;
-    public UserData usuario;
+    public User usuario;
     public string token;
+    public User[] usuarios;
     public string score;
 }
 
 [System.Serializable]
-public class UserData
+public class User
 {
     public string _id;
     public string username;
     public bool estado;
 
+}
+
+[System.Serializable]
+public class DataUser
+{
+    public string score;
+    public User[] Friends;
 }
