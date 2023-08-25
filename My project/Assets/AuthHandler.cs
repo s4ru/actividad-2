@@ -1,8 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class AuthHandler : MonoBehaviour
 {
@@ -11,12 +16,15 @@ public class AuthHandler : MonoBehaviour
 
     TMP_InputField UsernameInputField;
     TMP_InputField PasswordInputField;
-    TMP_InputField ScoreInputField;
+    
+
+    [SerializeField] TMP_InputField ScoreInputField;
 
     private string Token;
 
     private string Username;
 
+    public List<TextMeshProUGUI> scoreBoard;
 
     void Start()
     {
@@ -35,7 +43,7 @@ public class AuthHandler : MonoBehaviour
 
         UsernameInputField = GameObject.Find("InputFieldUsername").GetComponent<TMP_InputField>();
         PasswordInputField = GameObject.Find("InputFieldPassword").GetComponent<TMP_InputField>();
-        ScoreInputField = GameObject.Find("InputFieldScore").GetComponent<TMP_InputField>();
+        
     }
 
     public void Registrar()
@@ -62,19 +70,22 @@ public class AuthHandler : MonoBehaviour
 
     public void Score()
     {
-        AuthData authData = new AuthData();
-        authData.score = ScoreInputField.text;
+        Scorecito scorecito = new Scorecito();
+        scorecito.data = new DataUser();
 
-        string json = JsonUtility.ToJson(authData);
+        scorecito.username = Username;
+        scorecito.data.score = int.Parse(ScoreInputField.text);
 
+        string json = JsonUtility.ToJson(scorecito);
         StartCoroutine(SendScore(json));
     }
 
     IEnumerator SendScore(string json)
     {
-        UnityWebRequest request = UnityWebRequest.Put(ApiURL + "/score", json);
+        UnityWebRequest request = UnityWebRequest.Put(ApiURL + "usuarios", json);
         request.SetRequestHeader("Content-Type", "application/json");
-        request.method = "POST";
+        request.method = "PATCH";
+        request.SetRequestHeader("x-token", Token);
         yield return request.SendWebRequest();
 
         if (request.isNetworkError)
@@ -88,7 +99,7 @@ public class AuthHandler : MonoBehaviour
             {
                 AuthData data = JsonUtility.FromJson<AuthData>(request.downloadHandler.text);
 
-                Debug.Log("Se registro un score" + data.score);
+                Debug.Log("Se registro un score" + data.usuario.data.score);
             }
             else
             {
@@ -141,7 +152,16 @@ public class AuthHandler : MonoBehaviour
             {
                 AuthData data = JsonUtility.FromJson<AuthData>(request.downloadHandler.text);
                 Debug.Log("Sesion activa del usuario" + data.usuario.username);
-                
+                Debug.Log("Su score es" + data.usuario.data.score);
+               
+
+                var ScoreLeaderoard = data.usuarios.OrderByDescending(u => u.data.score).ToArray();
+
+                for (int i = 0; i < scoreBoard.Count; i++)
+                {
+                    scoreBoard[i].text = ScoreLeaderoard[i].username + " Puntaje: " + ScoreLeaderoard[i].data.score;
+                }
+
             }
             else
             {
@@ -173,6 +193,8 @@ public class AuthHandler : MonoBehaviour
                 PlayerPrefs.SetString("token",data.token);
                 PlayerPrefs.SetString("username", data.usuario.username);
                 Debug.Log(data.token);
+
+
             }
             else
             {
@@ -190,7 +212,7 @@ public class AuthData
     public User usuario;
     public string token;
     public User[] usuarios;
-    public string score;
+    
 }
 
 [System.Serializable]
@@ -199,12 +221,19 @@ public class User
     public string _id;
     public string username;
     public bool estado;
+    public DataUser data;
 
 }
 
 [System.Serializable]
 public class DataUser
 {
-    public string score;
-    public User[] Friends;
+    public int score;
+}
+
+[System.Serializable]
+public class Scorecito
+{
+    public string username;
+    public DataUser data;
 }
