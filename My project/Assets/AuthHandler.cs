@@ -66,6 +66,7 @@ public class AuthHandler : MonoBehaviour
         string json = JsonUtility.ToJson(authData);
 
         StartCoroutine(SendLogin(json));
+        StartCoroutine(GetPerfil(json));
     }
 
     public void Score()
@@ -137,7 +138,7 @@ public class AuthHandler : MonoBehaviour
 
     IEnumerator GetPerfil(string username)
     {
-        UnityWebRequest request = UnityWebRequest.Get(ApiURL + "usuarios/"+username);
+        UnityWebRequest request = UnityWebRequest.Get(ApiURL + "usuarios"+username);
         request.SetRequestHeader("x-token", Token);
         yield return request.SendWebRequest();
 
